@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de" >
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+    <meta http-equiv="Content-Script-Type" content="text/javascript"/>
+
+    <link rel="stylesheet" href="../static/main.css" type="text/css"/>
+
+    <script type="text/javascript" src="../static/lib/angular.js"></script>
+    <script type="text/javascript" src="../static/lib/angular-resource.js"></script>
+
+    <script type="text/javascript" src="../static/lib/mongolab.js"></script>
+    <script type="text/javascript" src="../static/lib/showdown.js"></script>
+
+    <script src="../static/app.js"></script>
+    <script src="../static/experiments.js"></script>
+    <script src="../static/overviewCtrl.js"></script>
+
+    <title>CrystalBall</title>
+</head>
+<body  ng-app="Crysball" ng-controller="OverviewCtrl">
+<h1>Experiments</h1>
+Filter <input ng-model='filter_by'/><br>
+<div class="experiment" ng-repeat='ex in experiments | orderBy:"-start_time" | filter:filter_by'>
+    <h3 class="{{ ex.status }}">{{ ex.name }} <span class='file'>({{ ex.mainfile }})</span></h3>
+    <p>{{ ex.doc }}</p>
+    <button ng-click="delete(ex)" class='delete_button'>delete</button>
+    <ul>
+        <li ng-show='ex.result'>Result: {{ ex.result }}</li>
+        <li>Seed: {{ ex.seed }}</li>
+        <li ng-show='ex.stop_time'>Elapsed-Time: {{ ex.stop_time - ex.start_time | number:1 }} sec</li>
+        <li>Options:
+            <ul>
+                <li ng-repeat='(option, val) in ex.options'>
+                    {{ option }} = {{ val }}
+                </li>
+            </ul>
+        </li>
+        <li>Info:
+            <ul>
+                <li ng-repeat='(info, val) in ex.info'>
+                    {{ info }} : {{ val }}
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <notes text-model='ex.notes'></notes>
+    <button ng-click="update(ex)" class='update_button'>update</button>
+</div>
+
+
+
+</body>
+</html>
